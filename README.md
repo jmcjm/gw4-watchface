@@ -6,7 +6,8 @@ watch face for the Samsung Galaxy Watch 4. It follows the layout of Samsung's
 three-hour forecast — with a few changes:
 
 - the time is always `HH:mm` in 24-hour format, without seconds in the text;
-- seconds are a thin ring at the very edge of the face, ticking once a second;
+- seconds are a thin ring at the very edge of the face, ticking once a second, or —
+  selectable in the face editor (Customize → Seconds) — smaller digits after the time (`HH:mm ss`);
 - the current **feels-like** temperature is shown next to the weather icon;
 - the forecast row shows the forecast **temperature** for each of the next three hours;
 - in ambient mode (AOD) everything except a thin, dim `HH:mm` is switched off.

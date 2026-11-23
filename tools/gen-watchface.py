@@ -304,7 +304,6 @@ def seconds_ring():
     dot_r = 3.2
     dot_y = C - RING_R - dot_r
     return f"""    <Group {a(name="seconds_ring", x=0, y=0, width=SIZE, height=SIZE)}>
-      <Variant mode="AMBIENT" target="alpha" value="0"/>
       <PartDraw {a(x=0, y=0, width=SIZE, height=SIZE)}>
         <Arc {a(**ring, startAngle=0, endAngle=360)}>
           <Stroke {a(color="#FF1B2023", thickness=RING_W)}/>
@@ -323,6 +322,72 @@ def seconds_ring():
         </PartDraw>
       </Group>
     </Group>"""
+
+
+# --- Seconds style (user option) ------------------------------------------
+# "ring": HH:mm plus the 1 Hz ring at the edge (default).
+# "digits": HH:mm:ss, seconds smaller and dimmer, no ring.
+# Labels are string resources (values/ and values-pl/); the runtime resolves
+# displayName as a resource name.
+SECONDS_CONFIG = "seconds_style"
+TIME_BOX = dict(x=25, y=160, width=400, height=124)
+SEC_SIZE = 50
+SEC_COLOR = "#FFA3ABB0"
+MAIN_DIGITS_SIZE = 92
+
+
+def user_configurations():
+    return f"""  <UserConfigurations>
+    <ListConfiguration {a(id=SECONDS_CONFIG, displayName="seconds_style_label", screenReaderText="seconds_style_label", defaultValue="ring")}>
+      <ListOption {a(id="ring", displayName="seconds_style_ring", screenReaderText="seconds_style_ring")}/>
+      <ListOption {a(id="digits", displayName="seconds_style_digits", screenReaderText="seconds_style_digits")}/>
+    </ListConfiguration>
+  </UserConfigurations>"""
+
+
+def clock_hhmm():
+    return f"""        <DigitalClock {a(**TIME_BOX)}>
+          <TimeText {a(format="hh:mm", hourFormat="24", align="CENTER", x=0, y=0, width=TIME_BOX["width"], height=TIME_BOX["height"])}>
+            <Font {a(family=FONT_LIGHT, size=108, color=TIME_COLOR)}/>
+          </TimeText>
+        </DigitalClock>"""
+
+
+def clock_hhmmss():
+    # HH:mm is right-aligned to a fixed edge and the seconds start just after
+    # it. Text is vertically centred in its box, so with Outfit's metrics
+    # (ascent 1.0, descent 0.26 em) the baseline sits 0.37 em below the box
+    # centre; the seconds box is shifted down to share the HH:mm baseline.
+    w, h = TIME_BOX["width"], TIME_BOX["height"]
+    split = 285                      # right edge of HH:mm in clock coordinates
+    gap = 10
+    sec_dy = round(0.37 * (MAIN_DIGITS_SIZE - SEC_SIZE))
+    return f"""        <DigitalClock {a(**TIME_BOX)}>
+          <TimeText {a(format="hh:mm", hourFormat="24", align="END", x=0, y=0, width=split, height=h)}>
+            <Font {a(family=FONT_LIGHT, size=MAIN_DIGITS_SIZE, color=TIME_COLOR)}/>
+          </TimeText>
+          <TimeText {a(format="ss", align="START", x=split + gap, y=sec_dy, width=w - split - gap, height=h)}>
+            <Font {a(family=FONT_LIGHT, size=SEC_SIZE, color=SEC_COLOR)}/>
+          </TimeText>
+        </DigitalClock>"""
+
+
+def time_and_seconds():
+    return f"""    <ListConfiguration {a(id=SECONDS_CONFIG)}>
+      <ListOption id="ring">
+        <Group {a(name="time_ring_mode", x=0, y=0, width=SIZE, height=SIZE)}>
+          <Variant mode="AMBIENT" target="alpha" value="0"/>
+{seconds_ring()}
+{clock_hhmm()}
+        </Group>
+      </ListOption>
+      <ListOption id="digits">
+        <Group {a(name="time_digits_mode", x=0, y=0, width=SIZE, height=SIZE)}>
+          <Variant mode="AMBIENT" target="alpha" value="0"/>
+{clock_hhmmss()}
+        </Group>
+      </ListOption>
+    </ListConfiguration>"""
 
 
 def active_group():
@@ -346,11 +411,6 @@ def active_group():
           </Font>
         </Text>
       </PartText>
-      <DigitalClock {a(x=25, y=160, width=400, height=124)}>
-        <TimeText {a(format="hh:mm", hourFormat="24", align="CENTER", x=0, y=0, width=400, height=124)}>
-          <Font {a(family=FONT_LIGHT, size=108, color=TIME_COLOR)}/>
-        </TimeText>
-      </DigitalClock>
 {chr(10).join(forecast_column(n, cx) for n, cx in ((1, 160), (2, 225), (3, 290)))}
     </Group>"""
 
@@ -376,9 +436,10 @@ def main():
 <WatchFace width="{SIZE}" height="{SIZE}">
   <Metadata key="CLOCK_TYPE" value="DIGITAL"/>
   <Metadata key="PREVIEW_TIME" value="19:43:07"/>
+{user_configurations()}
 {bitmap_fonts()}
   <Scene backgroundColor="#FF000000">
-{seconds_ring()}
+{time_and_seconds()}
 {active_group()}
 {chr(10).join(complication_slot(s) for s in SLOTS)}
 {feels_like_slot()}

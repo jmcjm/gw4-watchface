@@ -3,6 +3,12 @@
 <WatchFace width="450" height="450">
   <Metadata key="CLOCK_TYPE" value="DIGITAL"/>
   <Metadata key="PREVIEW_TIME" value="19:43:07"/>
+  <UserConfigurations>
+    <ListConfiguration id="seconds_style" displayName="seconds_style_label" screenReaderText="seconds_style_label" defaultValue="ring">
+      <ListOption id="ring" displayName="seconds_style_ring" screenReaderText="seconds_style_ring"/>
+      <ListOption id="digits" displayName="seconds_style_digits" screenReaderText="seconds_style_digits"/>
+    </ListConfiguration>
+  </UserConfigurations>
   <BitmapFonts>
     <BitmapFont name="weather_day">
       <Character name="0" resource="wx_unknown" width="96" height="96"/>
@@ -42,8 +48,11 @@
     </BitmapFont>
   </BitmapFonts>
   <Scene backgroundColor="#FF000000">
+    <ListConfiguration id="seconds_style">
+      <ListOption id="ring">
+        <Group name="time_ring_mode" x="0" y="0" width="450" height="450">
+          <Variant mode="AMBIENT" target="alpha" value="0"/>
     <Group name="seconds_ring" x="0" y="0" width="450" height="450">
-      <Variant mode="AMBIENT" target="alpha" value="0"/>
       <PartDraw x="0" y="0" width="450" height="450">
         <Arc centerX="225" centerY="225" width="443" height="443" startAngle="0" endAngle="360">
           <Stroke color="#FF1B2023" thickness="3"/>
@@ -62,6 +71,27 @@
         </PartDraw>
       </Group>
     </Group>
+        <DigitalClock x="25" y="160" width="400" height="124">
+          <TimeText format="hh:mm" hourFormat="24" align="CENTER" x="0" y="0" width="400" height="124">
+            <Font family="outfit_light" size="108" color="#FFE6E6E6"/>
+          </TimeText>
+        </DigitalClock>
+        </Group>
+      </ListOption>
+      <ListOption id="digits">
+        <Group name="time_digits_mode" x="0" y="0" width="450" height="450">
+          <Variant mode="AMBIENT" target="alpha" value="0"/>
+        <DigitalClock x="25" y="160" width="400" height="124">
+          <TimeText format="hh:mm" hourFormat="24" align="END" x="0" y="0" width="285" height="124">
+            <Font family="outfit_light" size="92" color="#FFE6E6E6"/>
+          </TimeText>
+          <TimeText format="ss" align="START" x="295" y="16" width="105" height="124">
+            <Font family="outfit_light" size="50" color="#FFA3ABB0"/>
+          </TimeText>
+        </DigitalClock>
+        </Group>
+      </ListOption>
+    </ListConfiguration>
     <Group name="active" x="0" y="0" width="450" height="450">
       <Variant mode="AMBIENT" target="alpha" value="0"/>
       <Group name="current_weather" x="168" y="56" width="48" height="48">
@@ -102,11 +132,6 @@
           </Font>
         </Text>
       </PartText>
-      <DigitalClock x="25" y="160" width="400" height="124">
-        <TimeText format="hh:mm" hourFormat="24" align="CENTER" x="0" y="0" width="400" height="124">
-          <Font family="outfit_light" size="108" color="#FFE6E6E6"/>
-        </TimeText>
-      </DigitalClock>
       <Group name="forecast_1" x="120" y="290" width="80" height="74">
         <Condition>
           <Expressions><Expression name="avail">[WEATHER.HOURS.1.IS_AVAILABLE]</Expression></Expressions>

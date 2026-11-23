@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="seconds_style_label">Sekundy</string>
+  <string name="seconds_style_ring">Pierścień na krawędzi</string>
+  <string name="seconds_style_digits">W godzinie (HH:mm:ss)</string>
+</resources>
