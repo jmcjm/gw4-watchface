@@ -47,6 +47,16 @@ def a(**attrs):
 
 
 # --- Complication slots -----------------------------------------------------
+# Tap handling: Samsung's WFF runtime (2.0.32) hit-tests a tap against the
+# ComplicationSlot element's own x/y/width/height rectangle, not against its
+# bounding shape, and fires the tap action of every slot that contains the
+# point. Rendering, on the other hand, is clipped only to the bounding shape,
+# and the editor outline comes from the bounding shape too. So every slot is
+# a 1x1 rectangle in the top-left corner (outside the round display, so it
+# cannot be touched) while its content and bounding shape are laid out in
+# face coordinates. Result: the face opens nothing when tapped, and the slots
+# stay visible and customizable in the editor.
+SLOT_TAP_RECT = dict(x=0, y=0, width=1, height=1)
 # style: "fill"     track + filled arc
 #        "segments" track + filled arc, both dashed into segments
 #        "dot"      full gradient arc + knob at the value
@@ -184,7 +194,7 @@ def complication_slot(s):
     # span the whole face or the outer half of the stroke and the icons vanish.
     bounding = a(centerX=f(C), centerY=f(C), width=SIZE, height=SIZE, thickness=60,
                  startAngle=f(s["start"] - 6), endAngle=f(s["end"] + 6), isRoundEdge="TRUE")
-    return (f'    <ComplicationSlot {a(slotId=s["id"], name=s["name"], displayName=s["display"], x=0, y=0, width=SIZE, height=SIZE, supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT", isCustomizable="TRUE")}>\n'
+    return (f'    <ComplicationSlot {a(slotId=s["id"], name=s["name"], displayName=s["display"], **SLOT_TAP_RECT, supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT", isCustomizable="TRUE")}>\n'
             f'      <Variant mode="AMBIENT" target="alpha" value="0"/>\n'
             f'      <DefaultProviderPolicy {a(**s["policy"])}/>\n'
             f'      <BoundingArc {bounding}/>\n'
@@ -271,12 +281,12 @@ FEELS_SLOT = dict(id=4, name="feels_like", display="Next to weather icon",
 def feels_like_slot():
     s = FEELS_SLOT
     w, h = s["width"], s["height"]
-    return f"""    <ComplicationSlot {a(slotId=s["id"], name=s["name"], displayName=s["display"], x=s["x"], y=s["y"], width=w, height=h, supportedTypes="SHORT_TEXT", isCustomizable="TRUE")}>
+    return f"""    <ComplicationSlot {a(slotId=s["id"], name=s["name"], displayName=s["display"], **SLOT_TAP_RECT, supportedTypes="SHORT_TEXT", isCustomizable="TRUE")}>
       <Variant mode="AMBIENT" target="alpha" value="0"/>
       <DefaultProviderPolicy {a(**s["policy"])}/>
-      <BoundingBox {a(x=0, y=0, width=w, height=h)}/>
+      <BoundingBox {a(x=s["x"], y=s["y"], width=w, height=h)}/>
       <Complication type="SHORT_TEXT">
-        <PartText {a(x=0, y=0, width=w, height=h)}>
+        <PartText {a(x=s["x"], y=s["y"], width=w, height=h)}>
           <Text align="START" ellipsis="TRUE">
             <Font {a(family=FONT_SEMI, size=26, color="#FFD0D4D6")}>
               <Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template>

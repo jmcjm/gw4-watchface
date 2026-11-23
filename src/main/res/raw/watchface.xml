@@ -213,7 +213,7 @@
         </Condition>
       </Group>
     </Group>
-    <ComplicationSlot slotId="0" name="top_left" displayName="Top left" x="0" y="0" width="450" height="450" supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT" isCustomizable="TRUE">
+    <ComplicationSlot slotId="0" name="top_left" displayName="Top left" x="0" y="0" width="1" height="1" supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT" isCustomizable="TRUE">
       <Variant mode="AMBIENT" target="alpha" value="0"/>
       <DefaultProviderPolicy defaultSystemProvider="STEP_COUNT" defaultSystemProviderType="SHORT_TEXT" primaryProvider="com.samsung.android.wear.shealth/com.samsung.android.wear.shealth.complications.steps.StepsComplicationProviderService" primaryProviderType="GOAL_PROGRESS"/>
       <BoundingArc centerX="225" centerY="225" width="450" height="450" thickness="60" startAngle="270" endAngle="358" isRoundEdge="TRUE"/>
@@ -281,7 +281,7 @@
         </PartImage>
       </Complication>
     </ComplicationSlot>
-    <ComplicationSlot slotId="1" name="top_right" displayName="Top right" x="0" y="0" width="450" height="450" supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT" isCustomizable="TRUE">
+    <ComplicationSlot slotId="1" name="top_right" displayName="Top right" x="0" y="0" width="1" height="1" supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT" isCustomizable="TRUE">
       <Variant mode="AMBIENT" target="alpha" value="0"/>
       <DefaultProviderPolicy defaultSystemProvider="WATCH_BATTERY" defaultSystemProviderType="RANGED_VALUE"/>
       <BoundingArc centerX="225" centerY="225" width="450" height="450" thickness="60" startAngle="2" endAngle="88" isRoundEdge="TRUE"/>
@@ -349,7 +349,7 @@
         </PartImage>
       </Complication>
     </ComplicationSlot>
-    <ComplicationSlot slotId="2" name="bottom_left" displayName="Bottom left" x="0" y="0" width="450" height="450" supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT" isCustomizable="TRUE">
+    <ComplicationSlot slotId="2" name="bottom_left" displayName="Bottom left" x="0" y="0" width="1" height="1" supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT" isCustomizable="TRUE">
       <Variant mode="AMBIENT" target="alpha" value="0"/>
       <DefaultProviderPolicy defaultSystemProvider="HEART_RATE" defaultSystemProviderType="SHORT_TEXT" primaryProvider="com.samsung.android.wear.shealth/com.samsung.android.wear.shealth.complications.heartrate.HeartrateComplicationProviderService" primaryProviderType="SHORT_TEXT"/>
       <BoundingArc centerX="225" centerY="225" width="450" height="450" thickness="60" startAngle="184" endAngle="266" isRoundEdge="TRUE"/>
@@ -421,7 +421,7 @@
         </PartImage>
       </Complication>
     </ComplicationSlot>
-    <ComplicationSlot slotId="3" name="bottom_right" displayName="Bottom right" x="0" y="0" width="450" height="450" supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT" isCustomizable="TRUE">
+    <ComplicationSlot slotId="3" name="bottom_right" displayName="Bottom right" x="0" y="0" width="1" height="1" supportedTypes="RANGED_VALUE GOAL_PROGRESS SHORT_TEXT" isCustomizable="TRUE">
       <Variant mode="AMBIENT" target="alpha" value="0"/>
       <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="RANGED_VALUE" primaryProvider="com.samsung.android.watch.weather/com.samsung.android.watch.weather.complication.UvIndexComplicationService" primaryProviderType="RANGED_VALUE"/>
       <BoundingArc centerX="225" centerY="225" width="450" height="450" thickness="60" startAngle="94" endAngle="176" isRoundEdge="TRUE"/>
@@ -493,12 +493,12 @@
         </PartImage>
       </Complication>
     </ComplicationSlot>
-    <ComplicationSlot slotId="4" name="feels_like" displayName="Next to weather icon" x="222" y="58" width="96" height="44" supportedTypes="SHORT_TEXT" isCustomizable="TRUE">
+    <ComplicationSlot slotId="4" name="feels_like" displayName="Next to weather icon" x="0" y="0" width="1" height="1" supportedTypes="SHORT_TEXT" isCustomizable="TRUE">
       <Variant mode="AMBIENT" target="alpha" value="0"/>
       <DefaultProviderPolicy defaultSystemProvider="EMPTY" defaultSystemProviderType="SHORT_TEXT" primaryProvider="com.samsung.android.watch.weather/com.samsung.android.watch.weather.complication.FeelsLikeTempComplicationService" primaryProviderType="SHORT_TEXT"/>
-      <BoundingBox x="0" y="0" width="96" height="44"/>
+      <BoundingBox x="222" y="58" width="96" height="44"/>
       <Complication type="SHORT_TEXT">
-        <PartText x="0" y="0" width="96" height="44">
+        <PartText x="222" y="58" width="96" height="44">
           <Text align="START" ellipsis="TRUE">
             <Font family="outfit_semibold" size="26" color="#FFD0D4D6">
               <Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template>

@@ -39,6 +39,11 @@ All five slots can be re-picked in the watch face editor (long-press the face â†
 
 The arcs accept `RANGED_VALUE`, `GOAL_PROGRESS` and `SHORT_TEXT` data.
 
+Tapping the face does nothing, by design: no part of it, complications included,
+opens an app. (Samsung's WFF runtime hit-tests taps against each complication
+slot's own rectangle, so the slots are given a 1Ã—1 rectangle outside the round
+display, while their content and editor outline keep their real positions.)
+
 ### About the temperatures
 
 Watch Face Format has no feels-like data source, neither for the current weather
