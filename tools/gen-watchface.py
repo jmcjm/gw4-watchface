@@ -255,6 +255,38 @@ def forecast_column(n, cx):
             f'      </Group>')
 
 
+# Current weather: icon plus the feels-like temperature on its right. WFF has
+# no feels-like data source (only WEATHER.TEMPERATURE), so the value comes from
+# Samsung Weather's feels-like complication bound to a small text-only slot.
+WX_ICON_X = 168
+FEELS_SLOT = dict(id=4, name="feels_like", display="Next to weather icon",
+                  x=WX_ICON_X + 54, y=58, width=96, height=44,
+                  policy=dict(defaultSystemProvider="EMPTY", defaultSystemProviderType="SHORT_TEXT",
+                              primaryProvider="com.samsung.android.watch.weather/"
+                                              "com.samsung.android.watch.weather.complication."
+                                              "FeelsLikeTempComplicationService",
+                              primaryProviderType="SHORT_TEXT"))
+
+
+def feels_like_slot():
+    s = FEELS_SLOT
+    w, h = s["width"], s["height"]
+    return f"""    <ComplicationSlot {a(slotId=s["id"], name=s["name"], displayName=s["display"], x=s["x"], y=s["y"], width=w, height=h, supportedTypes="SHORT_TEXT", isCustomizable="TRUE")}>
+      <Variant mode="AMBIENT" target="alpha" value="0"/>
+      <DefaultProviderPolicy {a(**s["policy"])}/>
+      <BoundingBox {a(x=0, y=0, width=w, height=h)}/>
+      <Complication type="SHORT_TEXT">
+        <PartText {a(x=0, y=0, width=w, height=h)}>
+          <Text align="START" ellipsis="TRUE">
+            <Font {a(family=FONT_SEMI, size=26, color="#FFD0D4D6")}>
+              <Template>%s<Parameter expression="[COMPLICATION.TEXT]"/></Template>
+            </Font>
+          </Text>
+        </PartText>
+      </Complication>
+    </ComplicationSlot>"""
+
+
 # --- Assembly ---------------------------------------------------------------
 def seconds_ring():
     d = 2 * RING_R
@@ -286,7 +318,7 @@ def seconds_ring():
 def active_group():
     return f"""    <Group {a(name="active", x=0, y=0, width=SIZE, height=SIZE)}>
       <Variant mode="AMBIENT" target="alpha" value="0"/>
-      <Group {a(name="current_weather", x=201, y=56, width=48, height=48)}>
+      <Group {a(name="current_weather", x=WX_ICON_X, y=56, width=48, height=48)}>
         <Condition>
           <Expressions><Expression name="avail">[WEATHER.IS_AVAILABLE]</Expression></Expressions>
           <Compare expression="avail">
@@ -339,6 +371,7 @@ def main():
 {seconds_ring()}
 {active_group()}
 {chr(10).join(complication_slot(s) for s in SLOTS)}
+{feels_like_slot()}
 {ambient_group()}
   </Scene>
 </WatchFace>
