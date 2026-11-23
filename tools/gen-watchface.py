@@ -234,8 +234,8 @@ def weather_icon(prefix, x, y, size, indent):
 
 
 def forecast_column(n, cx):
-    hour = f"(([HOUR_0_23] + {n}) % 24)"
-    lead = f'{hour} &lt; 10 ? &quot;0&quot; : &quot;&quot;'
+    # WFF has no per-hour feels-like source; the label is the plain forecast
+    # temperature for that hour, in the user's preferred unit.
     icon = 40
     ind = "            "
     return (f'      <Group {a(name=f"forecast_{n}", x=round(cx - 40), y=290, width=80, height=74)}>\n'
@@ -245,8 +245,8 @@ def forecast_column(n, cx):
             f'{weather_icon(f"HOURS.{n}.", 20, 0, icon, ind)}\n'
             f'            <PartText {a(x=0, y=46, width=80, height=26)}>\n'
             f'              <Text align="CENTER">\n'
-            f'                <Font {a(family=FONT_SEMI, size=19, color=DIM_TEXT)}>\n'
-            f'                  <Template>%s%s:00<Parameter expression="{lead}"/><Parameter expression="{hour}"/></Template>\n'
+            f'                <Font {a(family=FONT_SEMI, size=21, color=DIM_TEXT)}>\n'
+            f'                  <Template>%s°<Parameter expression="[WEATHER.HOURS.{n}.TEMPERATURE]"/></Template>\n'
             f'                </Font>\n'
             f'              </Text>\n'
             f'            </PartText>\n'

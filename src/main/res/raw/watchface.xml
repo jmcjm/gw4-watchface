@@ -134,8 +134,8 @@
             </Condition>
             <PartText x="0" y="46" width="80" height="26">
               <Text align="CENTER">
-                <Font family="outfit_semibold" size="19" color="#FFC4C9CC">
-                  <Template>%s%s:00<Parameter expression="(([HOUR_0_23] + 1) % 24) &lt; 10 ? &quot;0&quot; : &quot;&quot;"/><Parameter expression="(([HOUR_0_23] + 1) % 24)"/></Template>
+                <Font family="outfit_semibold" size="21" color="#FFC4C9CC">
+                  <Template>%s°<Parameter expression="[WEATHER.HOURS.1.TEMPERATURE]"/></Template>
                 </Font>
               </Text>
             </PartText>
@@ -169,8 +169,8 @@
             </Condition>
             <PartText x="0" y="46" width="80" height="26">
               <Text align="CENTER">
-                <Font family="outfit_semibold" size="19" color="#FFC4C9CC">
-                  <Template>%s%s:00<Parameter expression="(([HOUR_0_23] + 2) % 24) &lt; 10 ? &quot;0&quot; : &quot;&quot;"/><Parameter expression="(([HOUR_0_23] + 2) % 24)"/></Template>
+                <Font family="outfit_semibold" size="21" color="#FFC4C9CC">
+                  <Template>%s°<Parameter expression="[WEATHER.HOURS.2.TEMPERATURE]"/></Template>
                 </Font>
               </Text>
             </PartText>
@@ -204,8 +204,8 @@
             </Condition>
             <PartText x="0" y="46" width="80" height="26">
               <Text align="CENTER">
-                <Font family="outfit_semibold" size="19" color="#FFC4C9CC">
-                  <Template>%s%s:00<Parameter expression="(([HOUR_0_23] + 3) % 24) &lt; 10 ? &quot;0&quot; : &quot;&quot;"/><Parameter expression="(([HOUR_0_23] + 3) % 24)"/></Template>
+                <Font family="outfit_semibold" size="21" color="#FFC4C9CC">
+                  <Template>%s°<Parameter expression="[WEATHER.HOURS.3.TEMPERATURE]"/></Template>
                 </Font>
               </Text>
             </PartText>
