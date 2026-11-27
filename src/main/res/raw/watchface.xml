@@ -46,6 +46,19 @@
       <Word name="14" resource="wx_partly_cloudy_night" width="96" height="96"/>
       <Word name="15" resource="wx_windy" width="96" height="96"/>
     </BitmapFont>
+    <BitmapFont name="time_thin">
+      <Character name="0" resource="time_0" width="68" height="96"/>
+      <Character name="1" resource="time_1" width="68" height="96"/>
+      <Character name="2" resource="time_2" width="68" height="96"/>
+      <Character name="3" resource="time_3" width="68" height="96"/>
+      <Character name="4" resource="time_4" width="68" height="96"/>
+      <Character name="5" resource="time_5" width="68" height="96"/>
+      <Character name="6" resource="time_6" width="68" height="96"/>
+      <Character name="7" resource="time_7" width="68" height="96"/>
+      <Character name="8" resource="time_8" width="68" height="96"/>
+      <Character name="9" resource="time_9" width="68" height="96"/>
+      <Character name=":" resource="time_colon" width="24" height="96"/>
+    </BitmapFont>
   </BitmapFonts>
   <Scene backgroundColor="#FF000000">
     <ListConfiguration id="seconds_style">
@@ -534,13 +547,11 @@
     </ComplicationSlot>
     <Group name="ambient" x="0" y="0" width="450" height="450" alpha="0">
       <Variant mode="AMBIENT" target="alpha" value="255"/>
-      <PartText name="ambient_time" x="15" y="160" width="420" height="130">
-        <Text align="CENTER">
-          <Font family="outfit_thin" size="112" color="#FF7F8F99">
-            <Template>%s:%s<Parameter expression="[HOUR_0_23_Z]"/><Parameter expression="[MINUTE_Z]"/></Template>
-          </Font>
-        </Text>
-      </PartText>
+      <DigitalClock x="15" y="175" width="420" height="100">
+        <TimeText format="hh:mm" hourFormat="24" align="CENTER" x="0" y="0" width="420" height="100">
+          <BitmapFont family="time_thin" size="96" color="#FF7F8F99"/>
+        </TimeText>
+      </DigitalClock>
     </Group>
   </Scene>
 </WatchFace>

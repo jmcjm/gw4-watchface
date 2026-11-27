@@ -28,6 +28,13 @@ FONT_THIN = "outfit_thin"
 FONT_SEMI = "outfit_semibold"
 
 TIME_COLOR = "#FFE6E6E6"
+AOD_COLOR = "#FF7F8F99"   # must stay fully opaque, see ambient_group()
+
+# Bitmap font of the AOD time; cell sizes must match tools/make-time-glyphs.py.
+AOD_FONT = "time_thin"
+AOD_DIGIT_W = 68
+AOD_COLON_W = 24
+AOD_CELL_H = 96
 DIM_TEXT = "#FFC4C9CC"
 
 
@@ -219,6 +226,14 @@ def bitmap_fonts():
             tag = "Character" if i < 10 else "Word"
             out.append(f'      <{tag} {a(name=i, resource=res, width=96, height=96)}/>')
         out.append("    </BitmapFont>")
+    # AOD time digits, rendered by tools/make-time-glyphs.py. All ten digit
+    # cells must have the same size, or Samsung's runtime refuses to offload
+    # the clock ("DigitalClock does not have uniform atlas").
+    out.append(f'    <BitmapFont name="{AOD_FONT}">')
+    for d in range(10):
+        out.append(f'      <Character {a(name=d, resource=f"time_{d}", width=AOD_DIGIT_W, height=AOD_CELL_H)}/>')
+    out.append(f'      <Character {a(name=":", resource="time_colon", width=AOD_COLON_W, height=AOD_CELL_H)}/>')
+    out.append("    </BitmapFont>")
     out.append("  </BitmapFonts>")
     return "\n".join(out)
 
@@ -416,17 +431,28 @@ def active_group():
 
 
 def ambient_group():
+    # The AOD time is a DigitalClock with a bitmap font, so that Samsung's
+    # runtime can hand it to the display offload hardware (the watch then
+    # keeps the time on screen with the application processor asleep). Its
+    # offload checker (runtime 2.0.32) accepts only a DigitalClock/AnalogClock
+    # that is visible in ambient, and rejects a clock that:
+    #   - uses a TrueType Font instead of a BitmapFont ("no font atlas"),
+    #   - has digits 0-9 of different cell sizes ("no uniform atlas"),
+    #   - shows seconds or a hour/minute without a leading zero (h, m, s),
+    #   - has a Transform, Gyro, Localization, mask or a rotated parent,
+    #   - has a font color or ancestor alpha below 255 in ambient,
+    #   - has a text box smaller than the rendered text.
+    # Everything else visible in ambient is frozen into the offload
+    # background bitmap, so nothing else may change while in AOD.
     # Samsung runtime 2.0.32 ignores the <Outline> text decoration (nothing is
     # drawn with a transparent or black fill), so AOD uses thin filled digits.
     return f"""    <Group {a(name="ambient", x=0, y=0, width=SIZE, height=SIZE, alpha=0)}>
       <Variant mode="AMBIENT" target="alpha" value="255"/>
-      <PartText {a(name="ambient_time", x=15, y=160, width=420, height=130)}>
-        <Text align="CENTER">
-          <Font {a(family=FONT_THIN, size=112, color="#FF7F8F99")}>
-            <Template>%s:%s<Parameter expression="[HOUR_0_23_Z]"/><Parameter expression="[MINUTE_Z]"/></Template>
-          </Font>
-        </Text>
-      </PartText>
+      <DigitalClock {a(x=15, y=175, width=420, height=AOD_CELL_H + 4)}>
+        <TimeText {a(format="hh:mm", hourFormat="24", align="CENTER", x=0, y=0, width=420, height=AOD_CELL_H + 4)}>
+          <BitmapFont {a(family=AOD_FONT, size=AOD_CELL_H, color=AOD_COLOR)}/>
+        </TimeText>
+      </DigitalClock>
     </Group>"""
 
 
