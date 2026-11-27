@@ -547,8 +547,8 @@
     </ComplicationSlot>
     <Group name="ambient" x="0" y="0" width="450" height="450" alpha="0">
       <Variant mode="AMBIENT" target="alpha" value="255"/>
-      <DigitalClock x="15" y="175" width="420" height="100">
-        <TimeText format="hh:mm" hourFormat="24" align="CENTER" x="0" y="0" width="420" height="100">
+      <DigitalClock x="0" y="0" width="450" height="450">
+        <TimeText format="hh:mm" hourFormat="24" align="CENTER" x="15" y="175" width="420" height="100">
           <BitmapFont family="time_thin" size="96" color="#FF7F8F99"/>
         </TimeText>
       </DigitalClock>

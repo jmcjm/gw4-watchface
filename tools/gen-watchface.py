@@ -446,10 +446,15 @@ def ambient_group():
     # background bitmap, so nothing else may change while in AOD.
     # Samsung runtime 2.0.32 ignores the <Outline> text decoration (nothing is
     # drawn with a transparent or black fill), so AOD uses thin filled digits.
+    # The position is on the TimeText, with the DigitalClock covering the whole
+    # screen: the first layout the runtime sends after the face is selected
+    # places the time relative to the DigitalClock without adding its offset
+    # (it is added only from the next refresh on), which put the time at the
+    # top edge of the screen until then.
     return f"""    <Group {a(name="ambient", x=0, y=0, width=SIZE, height=SIZE, alpha=0)}>
       <Variant mode="AMBIENT" target="alpha" value="255"/>
-      <DigitalClock {a(x=15, y=175, width=420, height=AOD_CELL_H + 4)}>
-        <TimeText {a(format="hh:mm", hourFormat="24", align="CENTER", x=0, y=0, width=420, height=AOD_CELL_H + 4)}>
+      <DigitalClock {a(x=0, y=0, width=SIZE, height=SIZE)}>
+        <TimeText {a(format="hh:mm", hourFormat="24", align="CENTER", x=15, y=175, width=420, height=AOD_CELL_H + 4)}>
           <BitmapFont {a(family=AOD_FONT, size=AOD_CELL_H, color=AOD_COLOR)}/>
         </TimeText>
       </DigitalClock>
